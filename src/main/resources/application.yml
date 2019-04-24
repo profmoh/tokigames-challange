@@ -1,0 +1,24 @@
+logging:
+  file: ../Logfile.log
+  pattern:
+    file: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n'
+    console: '%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n'
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+server:
+  port: 8090
+
+api:
+  path: /tokigames/api/
+
+config:
+  thread:
+    maxpoolsize: 4
+    corepoolsize: 4
+    queuecapacity: 25
+    threadnameprefix: background_task
