@@ -25,7 +25,7 @@ There are two available flight’s providers:
 
 | NOTE: | `--spring.profiles.active=dev` is to let spring boot use the `application-dev.yml` property file. |
 |--|--|
-|||
+
  - Run unit testing using the following command.
 
 	`mvn test`
