@@ -17,7 +17,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
 	private final ResponseEntity<Object> buildResponseEntity(HttpStatus httpStatus, Object body) {
 		if (httpStatus == null)
-			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			httpStatus = HttpStatus.OK;
 
 		if (body == null)
 			return ResponseEntity.status(httpStatus).build();
@@ -52,7 +52,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 	public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
 		ex.printStackTrace();
 
-		ResponseDetails<String> responseDetails = ResponseDetails.ok(ex.getMessage());
+		ResponseDetails<String> responseDetails = ResponseDetails.status(HttpStatus.INTERNAL_SERVER_ERROR).build(ex.getMessage());
 
 		return buildResponseEntity(null, responseDetails.getBody());
 	}
