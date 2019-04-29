@@ -31,13 +31,17 @@ public class FlightsSearchController {
 			@RequestParam(name = "departDate", required = false) Date departDate,
 			@RequestParam(name = "returnDate", required = false) Date returnDate,
 			@RequestParam(name = "cost", required = false) Double cost,
-			@RequestParam(name = "sortBy", required = false) String sortBy) {
+			@RequestParam(name = "pageNumber", required = false) Integer pageNumber,
+			@RequestParam(name = "pageSize", required = false) Integer pageSize,
+			@RequestParam(name = "sortBy", defaultValue = "cost") String sortBy) {
 
 		return flightsSearchService.flightsSearch(departure,
 				arrival,
 				departDate,
 				returnDate,
 				cost,
+				pageNumber,
+				pageSize,
 				sortBy);
 	}
 }

@@ -15,5 +15,7 @@ public interface FlightsSearchService {
 			Date departDate,
 			Date returnDate,
 			Double cost,
+			Integer pageNumber,
+			Integer pageSize,
 			String sortBy) throws CustomException;
 }

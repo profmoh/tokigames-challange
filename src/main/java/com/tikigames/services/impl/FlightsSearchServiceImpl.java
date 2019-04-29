@@ -38,11 +38,14 @@ public class FlightsSearchServiceImpl implements FlightsSearchService {
 	@Value("${config.dateTimeFormate}")
 	private String defaultDateTimeFormate;
 
+	@Override
 	public Flux<AvailableFlightsPojo> flightsSearch(String departure,
 			String arrival,
 			Date departDate,
 			Date returnDate,
 			Double cost,
+			Integer pageNumber,
+			Integer pageSize,
 			String sortBy) throws CustomException {
 
 		CompletableFuture <Flux<AvailableFlightsPojo>> cheapProviderFlightsCompletable =
@@ -58,6 +61,17 @@ public class FlightsSearchServiceImpl implements FlightsSearchService {
 			results = cheapProviderFlightsCompletable.get().mergeWith(businessProviderFlightsCompletable.get());
 		} catch (InterruptedException | ExecutionException e) {
 			throw new CustomException(Messages.ERROR_RETRIEVING_DATA);
+		}
+
+		if(pageNumber != null && pageNumber > 0 && pageSize != null) {
+			// pagination
+			results =
+					Flux.fromStream(
+							results
+							.toStream()
+							.skip(pageSize * (pageNumber - 1))
+							.limit(pageSize)
+						);
 		}
 
 		if(StringUtils.isBlank(sortBy))
