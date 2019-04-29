@@ -1,42 +1,35 @@
-# tokigames-challange
+# tokigames-challange!
 
-This API is to search over available flights.
+This API is to **search over available flights**.
 
 There are two available flight’s providers:
 
-----
-- include::https://obscure-caverns-79008.herokuapp.com/cheap[]
-- include::https://obscure-caverns-79008.herokuapp.com/business[]
-----
-
+    https://obscure-caverns-79008.herokuapp.com/cheap
+    
+    https://obscure-caverns-79008.herokuapp.com/cheap
 
 # What required ?
 
-  * install maven.
-  * JDK 12.0.1 installed.
+ - install maven.
+ - install JDK 12.0.1.
 
+## Build the project
 
-# Build the project
+ -  Go to the project root path. Run the following command in CMD, to build the spring boot project. this will export an executable Jar file.
 
-  * in CMD in the root path run the command
-  ----
-  mvnw clean verify package
-  ----
-  
-  * open `\target` and in CMD run the command
-  ----
-  java -jar tokigames-challange-1.0.0 --spring.profiles.active=dev
-  ----
+	`mvnw clean verify package`
 
-  NOTE: `--spring.profiles.active=dev` is to let spring boot use the `application-dev.yml` property file.
-  
-  
-  * open swagger for viewing the available end points
-  ----
-  http://localhost:8090/swagger-ui.html
-  ----
-  
-  * you can run unit test using the command
-  ----
-  mvn test
-  ----
+ - Open `\target` and in CMD, and run the following command.
+
+	`java -jar tokigames-challange-1.0.0 --spring.profiles.active=dev`
+
+| NOTE: | `--spring.profiles.active=dev` is to let spring boot use the `application-dev.yml` property file. |
+|--|--|
+|||
+ - Run unit testing using the following command.
+
+	`mvn test`
+
+ - Open swagger ui page in browser. Swagger is a documentation for available APIs.
+
+	`http://localhost:8090/swagger-ui.html`
