@@ -4,10 +4,13 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.tikigames.Messages;
+import com.tikigames.exceptions.CustomException;
 import com.tikigames.integration.FlightProvidersIntegration;
 import com.tikigames.pojos.integration.HerokuappCheapPojo;
 
@@ -37,6 +40,14 @@ public class HerokuappCheapFlightProvider implements FlightProvidersIntegration 
 		return webClient.get()
 	            .uri(cheapUrl)
 	            .exchange()
-	            .flatMapMany(clientResponse -> clientResponse.bodyToFlux(HerokuappCheapPojo.class));
+	            .onErrorMap(e -> {
+	            	throw new CustomException(Messages.ERROR_RETRIEVING_DATA);
+	            })
+	            .flatMapMany(clientResponse -> {
+	            	if(! clientResponse.statusCode().equals(HttpStatus.OK))
+	            		throw new CustomException(Messages.ERROR_RETRIEVING_DATA);
+
+	            	return clientResponse.bodyToFlux(HerokuappCheapPojo.class);
+	            });
 	}
 }
