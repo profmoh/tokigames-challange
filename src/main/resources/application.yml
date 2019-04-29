@@ -17,8 +17,17 @@ api:
   path: /tokigames/api/
 
 config:
+  dateTimeFormate: yyyy-MM-dd
   thread:
     maxpoolsize: 4
     corepoolsize: 4
     queuecapacity: 25
     threadnameprefix: background_task
+
+integration:
+  herokuapp:
+    base-url: https://obscure-caverns-79008.herokuapp.com
+    cheap:
+      url: cheap
+    business:
+      url: business
