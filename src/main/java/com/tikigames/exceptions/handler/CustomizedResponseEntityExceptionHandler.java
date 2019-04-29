@@ -12,6 +12,14 @@ import com.tikigames.Messages;
 import com.tikigames.exceptions.CustomException;
 import com.weddini.throttling.ThrottlingException;
 
+/**
+ * 
+ * @author Mohamed
+ *
+ * Catch Any exception Thrown during handling Requests.
+ * The suitable method will handle the exeption and return response of type ResponseEntity<Object>
+ *
+ */
 @RestControllerAdvice
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -25,6 +33,13 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 			return ResponseEntity.status(httpStatus).body(body);
 	}
 
+	/**
+	 * handle exceptions of type CustomException.class
+	 * 
+	 * @param ex the CustomException instance
+	 * @param request HTTP request
+	 * @return
+	 */
 	@ExceptionHandler(CustomException.class)
 	public final ResponseEntity<Object> handleCustomException(CustomException ex, WebRequest request) {
 		ex.printStackTrace();
@@ -36,6 +51,12 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 		return buildResponseEntity(ex.getHttpStatus(), responseDetails.getBody());
 	}
 
+	/**
+	 * handle exceptions of type CustomException.class
+	 * 
+	 * @param ex the ThrottlingException instance
+	 * @return
+	 */
 	@ExceptionHandler(ThrottlingException.class)
 	public final ResponseEntity<Object> handleUserNotFoundException(ThrottlingException ex) {
 		ex.printStackTrace();
@@ -48,6 +69,12 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 		return buildResponseEntity(responseDetails.getHttpStatus(), responseDetails.getBody());
 	}
 
+	/**
+	 * handle any Exception other than CustomException and ThrottlingException.
+	 * 
+	 * @param ex the Exception instance
+	 * @return
+	 */
 	@ExceptionHandler(Exception.class)
 	public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
 		ex.printStackTrace();

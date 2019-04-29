@@ -15,6 +15,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import reactor.core.publisher.Flux;
 
+/**
+ * 
+ * @author Mohamed
+ *
+ */
 @RestController
 @Api(tags = "Flights search")
 @RequestMapping("${api.path}flights")
@@ -23,6 +28,22 @@ public class FlightsSearchController {
 	@Autowired
 	private FlightsSearchService flightsSearchService;
 
+	/**
+	 * End point to search for available flights
+	 * 
+	 * It support sorting, filtering and pagination using URL params.
+	 * 
+	 * @param departure the place of departure for filtering - optional -
+	 * @param arrival the place of arrival for filtering - optional -
+	 * @param departDate the departure date for filtering - optional -
+	 * @param returnDate the arrival date for filtering - optional -
+	 * @param cost the maximum cost for filtering - optional -
+	 * @param pageNumber the page number for pagination - optional -
+	 * @param pageSize the number of records per page for pagination - optional -
+	 * @param sortBy the name of field for sorting for sorting - optional -
+	 * 
+	 * @return Flux of all available flights
+	 */
 	@GetMapping("/search")
 	@ApiOperation(value = "${FlightsSearchController.flightsSearch}", response = AvailableFlightsPojo.class)
 	public Flux<AvailableFlightsPojo> flightsSearch(

@@ -6,6 +6,12 @@ import com.tikigames.Messages;
 
 import lombok.Getter;
 
+/**
+ * 
+ * @author Mohamed
+ *
+ * Custom Exception to facilitate handling exception and customizing the error messages
+ */
 @Getter
 public class CustomException extends RuntimeException {
 
