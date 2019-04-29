@@ -22,6 +22,10 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
+		<lombok.version>1.18.6</lombok.version>
+		<swagger.version>2.9.2</swagger.version>
+		<throttling.version>0.0.9</throttling.version>
+		<datazord.utils.version>1.0.0</datazord.utils.version>
 	</properties>
 
 	<repositories>
@@ -41,6 +45,14 @@
 		<repository>
 			<id>spring-boot-throttling-repo</id>
 			<url>https://raw.github.com/weddini/spring-boot-throttling/mvn-repo/</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>datazord-repo</id>
+			<url>https://raw.github.com/profmoh/utils/repository</url>
 			<snapshots>
 				<enabled>true</enabled>
 				<updatePolicy>always</updatePolicy>
@@ -66,6 +78,12 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- Spring reactive -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+
 		<!-- Lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -73,35 +91,38 @@
 			<optional>true</optional>
 		</dependency>
 
-		<!-- Spring reactive -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-webflux</artifactId>
-		</dependency>
-
 		<!-- Swagger -->
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
-			<version>2.9.2</version>
+			<version>${swagger.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
-			<version>2.9.2</version>
+			<version>${swagger.version}</version>
 		</dependency>
 
 		<!-- throttling -->
 		<dependency>
 			<groupId>com.weddini.throttling</groupId>
 			<artifactId>spring-boot-throttling-starter</artifactId>
-			<version>0.0.9</version>
+			<version>${throttling.version}</version>
 		</dependency>
 
 		<!-- tools -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.datazord</groupId>
+			<artifactId>utils</artifactId>
+			<version>${datazord.utils.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>joda-time</groupId>
+		    <artifactId>joda-time</artifactId>
 		</dependency>
 	</dependencies>
 
