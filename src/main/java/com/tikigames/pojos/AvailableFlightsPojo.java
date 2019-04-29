@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @Data
 public class AvailableFlightsPojo {
 
+	String id;
+
 	String departure;
 	String arrival;
 
-	String departDateTime;
-	String returnDateTime;
-
-	Double cost;
+	String departureDateTime;
+	String arrivalDateTime;
 }

@@ -1,6 +1,12 @@
 package com.tikigames.challenge;
 
-import org.assertj.core.api.Assertions;
+import static org.hamcrest.CoreMatchers.isA;
+import static org.junit.Assert.assertFalse;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,47 +16,49 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.reactive.server.WebTestClient;
-import org.springframework.test.web.reactive.server.WebTestClient.ResponseSpec;
+import org.springframework.test.web.servlet.MockMvc;
 
-import com.datazord.pojos.ResponseDetails;
+import com.tikigames.TokiApplication;
+import com.tikigames.pojos.AvailableFlightsPojo;
 
+/**
+ * 
+ * @author mohamed
+ *
+ * Test project Controller, flightsSearch end point
+ * 
+ * also test sorting, filtering and paginating results
+ *
+ */
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = WebEnvironment.MOCK, classes = TokiApplication.class)
 public class FlightsSearchTest {
 
 	@Autowired
-	private WebTestClient webClient;
+	private MockMvc mockMvc;
 
 	@BeforeClass
 	public static void setup() throws Exception {
 
 	}
 
+	/**
+	 * test basic flights search with out filtering or sorting
+	 */
 	@Test
 	public void testFlightsSearch() {
-
-		ResponseSpec exchange = webClient
-			// Create a GET request to test search flights endpoint
-			.get()
-			.uri("/tokigames/api/search")
-			.accept(MediaType.APPLICATION_JSON)
-			.exchange();
-
-		exchange
-			.expectStatus().isOk()
-			.expectBody(ResponseDetails.class)
-			.consumeWith(response ->
-					Assertions.assertThat(response.getResponseBody()).isNotNull());
-
-		exchange
-			.expectBody()
-			.jsonPath("$.success").isEqualTo(Boolean.TRUE)
-			.jsonPath("$.body").isNotEmpty();
-
-//		ResponseDetails<Flux<AvailableFlightsPojo>> response =
-//				(ResponseDetails<Flux<AvailableFlightsPojo>>) exchange.expectBody(ResponseDetails.class).returnResult().getResponseBody().getBody();
+		try {
+			mockMvc
+				.perform(get("/tokigames/api/flights/search").contentType(MediaType.APPLICATION_JSON))
+				.andDo(print())
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$").exists())
+				.andExpect(jsonPath("$[*]", isA(AvailableFlightsPojo.class)));
+		} catch (Exception e) {
+			e.printStackTrace();
+			assertFalse(true);
+		}
 	}
 
 	@Test

@@ -6,13 +6,13 @@ import org.springframework.stereotype.Component;
 
 import com.tikigames.Messages;
 import com.tikigames.exceptions.CustomException;
-import com.tikigames.integration.FlightProvidersIntegration;
+import com.tikigames.integration.HerokuappProviderIntegration;
 import com.tikigames.pojos.integration.HerokuappBusinessPojo;
 
 import reactor.core.publisher.Flux;
 
 @Component("businessFlightProvider")
-public class HerokuappBusinessFlightProvider extends FlightProvidersIntegration {
+public class HerokuappBusinessFlightProvider extends HerokuappProviderIntegration {
 
 	@Value("${integration.herokuapp.business.url}")
 	private String businessUrl;

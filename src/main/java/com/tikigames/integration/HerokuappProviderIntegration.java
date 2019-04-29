@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.tikigames.pojos.integration.HerokuappPojo;
-
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * An a for all Flight Providers.
@@ -20,7 +20,7 @@ import reactor.core.publisher.Flux;
  */
 /* note: I may make change it to interface or change the design depending on the requirement. */
 @Component
-public abstract class FlightProvidersIntegration {
+public abstract class HerokuappProviderIntegration {
 
 	protected WebClient webClient;
 
@@ -32,17 +32,34 @@ public abstract class FlightProvidersIntegration {
 	 */
 	@PostConstruct
 	public void init() {
-		webClient = WebClient.builder()
+		this.webClient = WebClient.builder()
 		        .baseUrl(baseUrl)
 		        .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+		        .filter(logRequest())
 		        .build();
 	}
 
 	/**
 	 * The method used to call the HerokuappPojo providers APIs and return the result flights as FLUX.
 	 * 
-	 * @param <T> where (T extends HerokuappPojo)
+	 * @param <T>
 	 * @return Flux<T> where (T extends HerokuappPojo) of all available flights from HerokuappPojo providers.
 	 */
-	public abstract <T extends HerokuappPojo> Flux<T> searchAvailableFlights();
+	public abstract <T> Flux<T> searchAvailableFlights();
+
+	/**
+	 * log request url and headers to console
+	 * 
+	 * @return
+	 */
+	private static ExchangeFilterFunction logRequest() {
+		return ExchangeFilterFunction.ofRequestProcessor(clientRequest -> {
+			System.out.println(clientRequest.method() + "    " + clientRequest.url());
+
+			clientRequest.headers().forEach((name, values) -> values
+					.forEach(value -> System.out.println(name + "    " + value)));
+
+			return Mono.just(clientRequest);
+		});
+	}
 }

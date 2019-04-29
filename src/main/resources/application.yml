@@ -26,7 +26,7 @@ config:
 
 integration:
   herokuapp:
-    base-url: https://obscure-caverns-79008.herokuapp.com
+    base-url: http://localhost:8091/flights/
     cheap:
       url: cheap
     business:

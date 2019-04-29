@@ -3,6 +3,7 @@ package com.tikigames.controllers;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,20 +50,20 @@ public class FlightsSearchController {
 	public Flux<AvailableFlightsPojo> flightsSearch(
 			@RequestParam(name = "departure", required = false) String departure,
 			@RequestParam(name = "arrival", required = false) String arrival,
-			@RequestParam(name = "departDate", required = false) Date departDate,
-			@RequestParam(name = "returnDate", required = false) Date returnDate,
-			@RequestParam(name = "cost", required = false) Double cost,
+			@RequestParam(name = "departureDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date departureDate,
+			@RequestParam(name = "arrivalDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date arrivalDate,
 			@RequestParam(name = "pageNumber", required = false) Integer pageNumber,
 			@RequestParam(name = "pageSize", required = false) Integer pageSize,
-			@RequestParam(name = "sortBy", defaultValue = "cost") String sortBy) {
+			@RequestParam(name = "sortBy", defaultValue = "departure") String sortBy,
+			@RequestParam(name = "sortDirection", defaultValue = "Asc") String sortDirection) {
 
 		return flightsSearchService.flightsSearch(departure,
 				arrival,
-				departDate,
-				returnDate,
-				cost,
+				departureDate,
+				arrivalDate,
 				pageNumber,
 				pageSize,
-				sortBy);
+				sortBy,
+				sortDirection);
 	}
 }
