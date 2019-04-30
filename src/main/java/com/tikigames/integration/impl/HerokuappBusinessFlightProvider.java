@@ -1,7 +1,5 @@
 package com.tikigames.integration.impl;
 
-import java.time.Duration;
-
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -48,7 +46,6 @@ public class HerokuappBusinessFlightProvider extends HerokuappProviderIntegratio
 				.get()
 				.uri(businessUrl)
 				.exchange()
-				.timeout(Duration.ofSeconds(60))
 				.onErrorMap(e -> {
 					throw new CustomException(Messages.ERROR_RETRIEVING_DATA);
 				})
