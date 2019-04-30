@@ -1,15 +1,11 @@
 package com.tikigames.integration.impl;
 
-import java.time.Duration;
-import java.util.function.Consumer;
-
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -19,7 +15,6 @@ import com.tikigames.integration.HerokuappProviderIntegration;
 import com.tikigames.pojos.integration.HerokuappCheapPojo;
 
 import reactor.core.publisher.Flux;
-import reactor.ipc.netty.http.client.HttpClientOptions;
 
 @Component("cheapFlightProvider")
 public class HerokuappCheapFlightProvider extends HerokuappProviderIntegration {
@@ -51,7 +46,6 @@ public class HerokuappCheapFlightProvider extends HerokuappProviderIntegration {
 				.get()
 				.uri(cheapUrl)
 				.exchange()
-				.timeout(Duration.ofSeconds(60))
 				.onErrorMap(e -> {
 					throw new CustomException(Messages.ERROR_RETRIEVING_DATA);
 				})
