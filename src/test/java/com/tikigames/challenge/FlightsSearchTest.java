@@ -1,10 +1,14 @@
 package com.tikigames.challenge;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.isA;
 import static org.junit.Assert.assertFalse;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.BeforeClass;
@@ -17,9 +21,13 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import com.tikigames.TokiApplication;
 import com.tikigames.pojos.AvailableFlightsPojo;
+
+import reactor.core.publisher.Flux;
 
 /**
  * 
@@ -49,12 +57,18 @@ public class FlightsSearchTest {
 	@Test
 	public void testFlightsSearch() {
 		try {
-			mockMvc
-				.perform(get("/tokigames/api/flights/search").accept(MediaType.APPLICATION_JSON))
-				.andDo(print())
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$").exists())
-				.andExpect(jsonPath("$[*]", isA(AvailableFlightsPojo.class)));
+			MvcResult mvcResult = mockMvc
+					.perform(get("/tokigames/api/flights/search").accept(MediaType.APPLICATION_JSON))
+					.andExpect(request().asyncStarted())
+					.andDo(print())
+					.andDo(MockMvcResultHandlers.log())
+					.andReturn();
+
+			mockMvc.perform(asyncDispatch(mvcResult))
+					.andExpect(status().isOk())
+					.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+					.andExpect(jsonPath("$").exists())
+					.andExpect(jsonPath("$[0]", isA(AvailableFlightsPojo.class)));
 		} catch (Exception e) {
 			e.printStackTrace();
 			assertFalse(true);
