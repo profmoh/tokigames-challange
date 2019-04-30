@@ -1,6 +1,5 @@
 package com.tikigames.challenge;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.isA;
 import static org.junit.Assert.assertFalse;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
@@ -26,8 +25,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import com.tikigames.TokiApplication;
 import com.tikigames.pojos.AvailableFlightsPojo;
-
-import reactor.core.publisher.Flux;
 
 /**
  * 
