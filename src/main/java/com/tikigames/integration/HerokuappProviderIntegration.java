@@ -1,13 +1,7 @@
 package com.tikigames.integration;
 
-import javax.annotation.PostConstruct;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -22,23 +16,6 @@ import reactor.core.publisher.Mono;
 @Component
 public abstract class HerokuappProviderIntegration {
 
-	protected WebClient webClient;
-
-	@Value("${integration.herokuapp.base-url}")
-	private String baseUrl;
-
-	/**
-	 * This method will be called once, at the initialization step of any child class for this abstract class.
-	 */
-	@PostConstruct
-	public void init() {
-		this.webClient = WebClient.builder()
-		        .baseUrl(baseUrl)
-		        .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-		        .filter(logRequest())
-		        .build();
-	}
-
 	/**
 	 * The method used to call the HerokuappPojo providers APIs and return the result flights as FLUX.
 	 * 
@@ -52,7 +29,7 @@ public abstract class HerokuappProviderIntegration {
 	 * 
 	 * @return
 	 */
-	private static ExchangeFilterFunction logRequest() {
+	protected static ExchangeFilterFunction logRequest() {
 		return ExchangeFilterFunction.ofRequestProcessor(clientRequest -> {
 			System.out.println(clientRequest.method() + "    " + clientRequest.url());
 
